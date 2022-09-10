@@ -9,17 +9,50 @@ function makeRows(rows, cols) {
         container.appendChild(cell).className = 'grid-item';
         container.appendChild(cell).setAttribute('id', 'grid-item');
     };
+    hoverEffect();
 };
 
 makeRows(16, 16);
 
-function hoverListener() {
-    griddy.setAttribute('style', 'background-color:yellow;');
+let btn = document.getElementById("btn");
+btn.addEventListener('click', event => {
+    removeOldGrid();
+    let rows = prompt('How many rows? ');
+    if (rows > 100) {
+        alert('too large');
+        return;
+    }
+    let cols = prompt('How many columns? ');
+    if (cols > 100) {
+        alert('too large');
+        return;
+    }
+    makeRows(rows,cols);
+
+});
+
+
+
+let randomColor = function() {
+    let letters  = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
 
-function returnBackground() {
-    griddy.removeAttribute('style', 'background-color:yellow;');
+function hoverEffect() {
+    let items = document.querySelectorAll('#grid-item');
+    items.forEach(item => {
+        item.addEventListener('mouseover', () => {
+            item.style.backgroundColor = `${randomColor()}`;
+        });
+    });
 }
-let griddy = document.getElementById('grid-item');
-griddy.addEventListener('mouseover', hoverListener);
-griddy.addEventListener('mouseout', returnBackground);
+
+
+function removeOldGrid () {
+    document.querySelectorAll('#grid-item')
+    .forEach((e) => e.parentNode.removeChild(e));
+    }
